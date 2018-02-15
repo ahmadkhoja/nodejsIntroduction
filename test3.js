@@ -1,20 +1,15 @@
 
-// const url = "post/1"
-// const input = url.split('/')
-// let x = input[1];
-//     if(input[0] == "post" && input[1]==x){
-//         console.log(input)
-//     }else{
-//         console.log("error");
-//     }
-
-// input.shift()
-// input.unshift('ahmad')
-
-
-
 const port = 3000;
 const http = require('http')
+
+const makeArticle = (title,text)=>{
+    return `
+    <div>
+    <h1>`+ title +`</h1>
+    <p>`+ text +`</p>
+    </div>
+    `
+}
 
 const makePage = (header,body) => {
     return `
@@ -35,17 +30,27 @@ const makePage = (header,body) => {
 const server = http.createServer( (request,response)=>{
     const url = request.url;
     var input = url.split('/')
-    console.log('before',input)
+    // console.log('before',input)
     // input[0].push('/');
     let x = input[2];
     // input[0] = '/'
-    console.log('after',input)
+    // console.log('after',input)
     
     const check = (url)=>{
         if(input[2]>=1 && input[2]<=5000){
             if((input[1]) == "post" && input[2]==x){
-                console.log(input)
-              response.end(makePage(`Post`,`welcome to` + x));      
+                // console.log(input)
+            const internet = makeArticle('Internet','Internet is network of networks');
+            const game = makeArticle('Game','The place where you can fight evil and win');
+            const movie = makeArticle('Movie','Just sit down and relax');
+            
+            const array = [internet,game,movie]
+
+            for(let i=0;i<array.length;i++){
+                response.write(array[i]);
+            }    
+              response.end();
+
               }else{
                   response.end(makePage(`404`,`page not found: error `))
               }  
@@ -53,10 +58,8 @@ const server = http.createServer( (request,response)=>{
         else{
             response.end(makePage(`not allowed`,`sorry you cannot`))
         }
-          
-        
-    
     }
+    
     
     if(url =='/home'){
        response.end(makePage(`Home`,`welcome to `)) 
