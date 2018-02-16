@@ -2,6 +2,15 @@ var port = 3000;
 var express = require('express')
 var app = express()
 
+const makeArticle = (title,text)=>{
+    return `
+    <div>
+    <h1>`+ title +`</h1>
+    <p>`+ text +`</p>
+    </div>
+    `
+}
+
 
 var makePage = function(header,subject){
    
@@ -39,12 +48,22 @@ app.get('/post/:x?',(request,response)=>{
     if(x>=1 && x<=5000){
         if(input[1] == "post" && input[2]==x){
             console.log(input)
-          response.send(makePage(`Post`,`welcome to post ` + x));      
+            const internet = makeArticle('Internet','Internet is network of networks');
+            const game = makeArticle('Game','The place where you can fight evil and win');
+            const movie = makeArticle('Movie','Just sit down and relax');
+            
+            const array = [internet,game,movie]
+
+            for(let i=0;i<array.length;i++){
+                response.write(array[i]);
+            }    
+              response.end();
+        //   response.send(makePage(`Post`,`welcome to post ` + x));      
           }else{
-              response.send(makePage(`404`,`page not found: error `))
+            response.send(makePage(`not allowed`,`sorry you cannot`))      
           }  
     }else{
-        response.send(makePage(`not allowed`,`sorry you cannot`))
+        response.send(makePage(`404`,`page not found: error `))
     }
 })
 
